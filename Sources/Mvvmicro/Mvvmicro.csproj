@@ -39,9 +39,10 @@
     <Compile Include="Navigation\NavigationUrlQuery.cs" />
     <Compile Include="Commands\AsyncRelayCommand.cs" />
     <Compile Include="Commands\AsyncRelayCommand{T}.cs" />
-    <Compile Include="Commands\IAsyncCommand.cs" />
+    <Compile Include="Commands\IAsyncRelayCommand.cs" />
     <Compile Include="Observable.cs" />
     <Compile Include="Assignments\Assignement.cs" />
+    <Compile Include="Commands\IRelayCommand.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Commands\" />
