@@ -14,8 +14,8 @@ Available on NuGet
 
 A base implementation of `INotifyPropertyChanged` with helper method for raising property changes and base navigation elements.
 
-* `Set<T>(ref T field, T newValue, [auto] string propertyName)` : sets the value of the referenced field with the given new value and raises `PropertyChanged` event if its different value that the current one.
-* `Set<T>(ref T field, T newValue, string[] linkedProperties, [auto] string propertyName)` : the same than the previous one but raises a set of other named properties if the value changed. It is useful for properties depending of another one.
+* `Set<T>(ref T field, T newValue, [auto] string propertyName)` : sets the value of the referenced field with the given new value and raises `PropertyChanged` even if its different value that the current one. An `Assignment<T>` will be returned to indicate the change status with `HasChanged`. If the value changed, this object also allows you in to raise other linked properties that depends on the current one with `ThenRaise(params string[] dependencies)` (*use* `nameof(<Name>)` *to avoid magic strings in your code*).
+
 * `NavigateAsync(string url)` : triggers a navigation through the injected `INavigation`.
 
 ```csharp
@@ -31,13 +31,13 @@ public class HomeViewModel : ViewModelBase
     public string Firstname
     {
     	get { return this.firstname; }
-    	set { this.Set(ref this.firstname, value, new [] { nameof(Fullname)})); }
+    	set { this.Set(ref this.firstname, value).ThenRaise(nameof(Fullname))); }
     }
     
     public string Lastname
     {
     	get { return lastname; }
-    	set { this.Set(ref lastname, value, new [] { nameof(Fullname)})); }
+    	set { this.Set(ref lastname, value).ThenRaise(nameof(Fullname))); }
     }
     
     public string Fullname => $"{Firstname} {Lastname}";
