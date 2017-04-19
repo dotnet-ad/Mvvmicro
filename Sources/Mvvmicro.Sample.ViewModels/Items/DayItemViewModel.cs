@@ -6,12 +6,15 @@
 	{
 		public DayItemViewModel(Forecast model)
 		{
+			this.Identifier = model.Identifier;
 			this.Name = model.Date.ToString("dddd");
 			this.Condition = model.Condition;
 			this.MinTemperature = model.MinTemperature;
 			this.MaxTemperature = model.MaxTemperature;
 			this.Humidity = model.Humidity;
 		}
+
+		public string Identifier { get; protected set; }
 
 		public string Name { get; protected set; }
 

@@ -13,6 +13,7 @@
 			this.api = api;
 			this.database = database;
 			this.UpdateCommand = new AsyncRelayCommand(ExecuteUpdateCommand);
+			this.SelectDayCommand = new AsyncRelayCommand<DayItemViewModel>(ExecuteSelectDayCommand);
 		}
 
 		#region Fields
@@ -65,6 +66,13 @@
 				await this.database.InsertOrUpdateAsync(models);
 				this.Forecast = models.Select(x => new DayItemViewModel(x));
 			}
+		}
+
+		public AsyncRelayCommand<DayItemViewModel> SelectDayCommand { get; }
+
+		private Task ExecuteSelectDayCommand(DayItemViewModel day, CancellationToken token)
+		{
+			return this.NavigateAsync($"Day?id={day.Identifier}");
 		}
 
 		#endregion

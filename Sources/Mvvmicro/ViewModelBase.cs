@@ -20,11 +20,11 @@
 
 		public RelayCommand GoBackCommand { get; }
 
-		private Task NavigateAsync(string url) => this.NavigateAsync(new NavigationUrl(url));
+		protected Task NavigateAsync(string url) => this.NavigateAsync(new NavigationUrl(url));
 
-		private Task NavigateAsync(NavigationUrl url) => this.Navigation.NavigateAsync(url);
+		protected Task NavigateAsync(NavigationUrl url) => this.Navigation.NavigateAsync(url);
 
-		private Task NavigateBackAsync() => this.Navigation.NavigateBackAsync();
+		protected Task NavigateBackAsync() => this.Navigation.NavigateBackAsync();
 
 		#endregion
 	}
