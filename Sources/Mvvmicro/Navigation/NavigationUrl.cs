@@ -11,7 +11,7 @@
 
 		public NavigationUrl(string url)
 		{
-			var segments = url?.Split('/', '\\') ?? new string[0];
+			var segments = url?.Split(new char[] { '/', '\\'}, System.StringSplitOptions.RemoveEmptyEntries) ?? new string[0];
 			this.Segments = segments.Select(x => new NavigationUrlSegment(x)).ToArray();
 		}
 

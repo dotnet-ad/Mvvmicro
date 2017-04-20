@@ -11,6 +11,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mvvmicro.Sample.Views.iOS",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mvvmicro.Sample.Models", "Mvvmicro.Sample.Models\Mvvmicro.Sample.Models.csproj", "{9FD4FACC-15D5-4945-849A-29F32C19ABA1}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{1502480E-7739-4B3F-AC80-97232D60E7BE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mvvmicro.Tests", "Mvvmicro.Tests\Mvvmicro.Tests.csproj", "{37D8F9BF-0D84-4FDA-B3AF-9A7DC19E550A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -66,10 +70,23 @@ Global
 		{9FD4FACC-15D5-4945-849A-29F32C19ABA1}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
 		{9FD4FACC-15D5-4945-849A-29F32C19ABA1}.Debug|iPhone.ActiveCfg = Debug|Any CPU
 		{9FD4FACC-15D5-4945-849A-29F32C19ABA1}.Debug|iPhone.Build.0 = Debug|Any CPU
+		{37D8F9BF-0D84-4FDA-B3AF-9A7DC19E550A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{37D8F9BF-0D84-4FDA-B3AF-9A7DC19E550A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{37D8F9BF-0D84-4FDA-B3AF-9A7DC19E550A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{37D8F9BF-0D84-4FDA-B3AF-9A7DC19E550A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{37D8F9BF-0D84-4FDA-B3AF-9A7DC19E550A}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{37D8F9BF-0D84-4FDA-B3AF-9A7DC19E550A}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{37D8F9BF-0D84-4FDA-B3AF-9A7DC19E550A}.Release|iPhone.ActiveCfg = Release|Any CPU
+		{37D8F9BF-0D84-4FDA-B3AF-9A7DC19E550A}.Release|iPhone.Build.0 = Release|Any CPU
+		{37D8F9BF-0D84-4FDA-B3AF-9A7DC19E550A}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{37D8F9BF-0D84-4FDA-B3AF-9A7DC19E550A}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
+		{37D8F9BF-0D84-4FDA-B3AF-9A7DC19E550A}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{37D8F9BF-0D84-4FDA-B3AF-9A7DC19E550A}.Debug|iPhone.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{5B78E2F3-B401-4169-A740-9A318BA22939} = {19416D57-A152-4209-990C-E1213244169E}
 		{AA5D6291-D6F6-4799-B780-D945A3B563FF} = {19416D57-A152-4209-990C-E1213244169E}
 		{9FD4FACC-15D5-4945-849A-29F32C19ABA1} = {19416D57-A152-4209-990C-E1213244169E}
+		{37D8F9BF-0D84-4FDA-B3AF-9A7DC19E550A} = {1502480E-7739-4B3F-AC80-97232D60E7BE}
 	EndGlobalSection
 EndGlobal
