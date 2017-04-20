@@ -99,6 +99,16 @@ public class HomeViewModel : ViewModelBase
 }
 ```
 
+## Complementary tools
+
+Bellow, you will find a list of tools that can be used in combination with Mvvmicro to build mobile or desktop application projects.
+
+* [Autofac](https://autofac.org/) : Inversion of control.
+* [Wires](https://github.com/aloisdeniel/Wires) : View bindings from Xamarin.
+* [Refit](https://github.com/paulcbetts/refit) : Rest client implementation generator.
+* [LiteDB](http://www.litedb.org/) : Small embedded NoSQL database.
+* [Xamarin Plugins](https://github.com/xamarin/XamarinComponents) : Various abstractions for platform specific behaviours
+
 ## Roadmap / Ideas
 
 * Create a Fody task for generating properties.
