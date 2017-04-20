@@ -8,16 +8,27 @@
 	public interface INavigation
 	{
 		/// <summary>
+		/// Gets a value indicating whether this <see cref="T:Mvvmicro.INavigation"/> can navigate back.
+		/// </summary>
+		/// <value><c>true</c> if can navigate back; otherwise, <c>false</c>.</value>
+		bool CanNavigateBack { get; }
+
+		/// <summary>
 		/// Navigates to the specified url.
 		/// </summary>
 		/// <returns>The async.</returns>
 		/// <param name="url">URL.</param>
-		Task NavigateAsync(NavigationUrl url);
+		Task NavigateToAsync(NavigationUrl url);
 
 		/// <summary>
 		/// Navigates back.
 		/// </summary>
 		/// <returns>The back async.</returns>
 		Task NavigateBackAsync();
+	}
+
+	public static class INavigationExtensions
+	{
+		public static Task NavigateToAsync(this INavigation nav, string url) => nav.NavigateToAsync(new NavigationUrl(url));
 	}
 }
