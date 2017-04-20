@@ -21,10 +21,7 @@ A base implementation of `INotifyPropertyChanged` with helper method for raising
 ```csharp
 public class HomeViewModel : ViewModelBase
 {
-    public HomeViewModel(INavigation nav) : base(nav)
-    {
-    	this. UpdateCommand = new RelayCommand(ExecuteUpdateCommand, CanExecuteUpdateCommand);
-    }
+    public HomeViewModel(INavigation nav) : base(nav) {}
     
     private string firstname, lastname;
     
@@ -81,7 +78,7 @@ public class UwpNavigation : INavigation
 
 ### Relay commands
 
-The `(Async)RelayCommand<T>` classes are helpers for creating `ICommand` synchronous and asynchronous implementations on the fly from methods. An alternate version `(Async)RelayCommand<T>` with a typed parameterer is also provided. 
+The `(Async)RelayCommand` classes are helpers for creating `ICommand` synchronous and asynchronous implementations on the fly from methods. An alternate version `(Async)RelayCommand<T>` with a typed parameterer is also provided. 
 
 **Example:**
 
@@ -108,7 +105,7 @@ public class HomeViewModel : ViewModelBase
 
 ## Why ?
 
-I decided to created this small framework because other alternatives offer often to much for me and include unused or duplicate parts (IoC, ...), or I find their navigation model not enough flexible. It's also a good starting point to learn MVVM for students. That's why this framework includes only the minimal bits I need for the majority of my developments.
+I decided to create this small framework because other alternatives offer often too much stuff for me and include unused or duplicated parts (IoC, ...). I also often find their navigation model to be not enough flexible. Finally, it's also a good starting point to learn MVVM to students. That's why this framework includes only the minimal bits I need for the majority of my developments.
 
 ## Contributions
 
