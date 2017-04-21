@@ -5,7 +5,7 @@
 	/// <summary>
 	/// A navigation abstraction for mobile or desktop applications.
 	/// </summary>
-	public interface INavigation
+	public interface INavigationRouter
 	{
 		/// <summary>
 		/// Gets a value indicating whether this <see cref="T:Mvvmicro.INavigation"/> can navigate back.
@@ -27,8 +27,8 @@
 		Task NavigateBackAsync();
 	}
 
-	public static class INavigationExtensions
+	public static class INavigationRouterExtensions
 	{
-		public static Task NavigateToAsync(this INavigation nav, string url) => nav.NavigateToAsync(new NavigationUrl(url));
+		public static Task NavigateToAsync(this INavigationRouter nav, string url) => nav.NavigateToAsync(new NavigationUrl(url));
 	}
 }

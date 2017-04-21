@@ -8,7 +8,7 @@
 
 	public class HomeViewModel : ViewModelBase
 	{
-		public HomeViewModel(IWeatherApi api, IDatabase database, INavigation navigation) : base(navigation)
+		public HomeViewModel(IWeatherApi api, IDatabase database, INavigationRouter navigation) : base(navigation)
 		{
 			this.api = api;
 			this.database = database;

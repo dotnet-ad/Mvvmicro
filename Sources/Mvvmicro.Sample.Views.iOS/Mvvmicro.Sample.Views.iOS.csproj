@@ -91,6 +91,7 @@
   <ItemGroup>
     <Folder Include="Resources\" />
     <Folder Include="ViewControllers\" />
+    <Folder Include="Navigation\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -115,6 +116,7 @@
     <Compile Include="ViewControllers\DayViewController.designer.cs">
       <DependentUpon>DayViewController.cs</DependentUpon>
     </Compile>
+    <Compile Include="Navigation\iOSNavigationRouter.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Mvvmicro\Mvvmicro.csproj">

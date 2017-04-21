@@ -4,7 +4,7 @@
 	{
 		#region Constructors
 
-		public ViewModelBase(INavigation navigation)
+		public ViewModelBase(INavigationRouter navigation)
 		{
 			this.Navigation = navigation;
 			this.NavigateBackCommand = new AsyncRelayCommand((c) => this.Navigation.NavigateBackAsync(), () => this.Navigation.CanNavigateBack);
@@ -14,8 +14,16 @@
 
 		#region Navigation
 
-		public INavigation Navigation { get; }
+		/// <summary>
+		/// Gets the navigation router.
+		/// </summary>
+		/// <value>The navigation.</value>
+		public INavigationRouter Navigation { get; }
 
+		/// <summary>
+		/// Gets the command to go back through navigation router.
+		/// </summary>
+		/// <value>The navigate back command.</value>
 		public IAsyncRelayCommand NavigateBackCommand { get; }
 
 		#endregion

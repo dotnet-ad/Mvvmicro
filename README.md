@@ -30,7 +30,7 @@ public class HomeViewModel : Observable
     public string Lastname
     {
     	get { return lastname; }
-    	set { this.Set(ref lastname, value).ThenRaise(nameof(Fullname))); }
+    	set { this.Set(ref this.lastname, value).ThenRaise(nameof(Fullname))); }
     }
     
     public string Fullname => $"{Firstname} {Lastname}";
@@ -63,9 +63,9 @@ public class HomeViewModel : ViewModelBase
 }
 ```
 
-### INavigation
+### INavigationRouter
 
-The navigation abstract the navigation of your app through an interpreter of URLs. It's up to you to provide an implementation to your view models by implementing its two methods `NavigateToAsync(NavigationUrl url)` and `NavigateBackAsync()`.
+The router abstracts the navigation of your app through an interpreter of `NavigationUrl`. It's up to you to provide an implementation to your view models by implementing its two methods `NavigateToAsync(NavigationUrl url)` and `NavigateBackAsync()`.
 
 **Example:**
 
@@ -79,7 +79,7 @@ public class UwpNavigation : INavigation
 		
 		private Frame frame;
 
-		public bool CanNavigateBack => CanGoBack;
+		public bool CanNavigateBack => this.frame.CanGoBack;
 
 		public Task NavigateToAsync(NavigationUrl url)
 		{
@@ -97,6 +97,26 @@ public class UwpNavigation : INavigation
 }
 ```
 
+Then, to trigger a navigation from your ViewModel layer, use the navigate method from the router.
+
+```csharp
+this.Navigation.NavigateToAsync($"/Product?id={5}");
+```
+
+```csharp
+var url = new NavigationUrl("/Product").AddArg("id",5)
+this.Navigation.NavigateToAsync(url);
+```
+
+To create more complex interpreter, several matching methods are also available from `NavigationUrl`.
+
+```csharp
+var url = new NavigationUrl("/Products/Details?v1=4,v2=6");
+if(url.Match("/Products/Details")) // True
+{
+	// ...
+}
+```
 
 ### Relay commands
 
@@ -147,4 +167,6 @@ If you want to contribute code please file an issue and create a branch off of t
 
 ### License
 
-MIT © [Aloïs Deniel](http://aloisdeniel.github.io)
+![MIT © Aloïs](https://img.shields.io/badge/licence-MIT-blue.svg) 
+
+© [Aloïs Deniel](http://aloisdeniel.github.io)
