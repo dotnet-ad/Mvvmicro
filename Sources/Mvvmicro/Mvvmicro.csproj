@@ -32,7 +32,6 @@
     <Compile Include="ViewModelBase.cs" />
     <Compile Include="Commands\RelayCommand.cs" />
     <Compile Include="Commands\RelayCommand{T}.cs" />
-    <Compile Include="Navigation\INavigationRouter.cs" />
     <Compile Include="Extensions\QueryExtensions.cs" />
     <Compile Include="Commands\AsyncRelayCommand.cs" />
     <Compile Include="Commands\AsyncRelayCommand{T}.cs" />
@@ -40,18 +39,13 @@
     <Compile Include="Observable.cs" />
     <Compile Include="Assignments\Assignement.cs" />
     <Compile Include="Commands\IRelayCommand.cs" />
+    <Compile Include="Navigation\Serialization\INavigationUrlParameterSerializer.cs" />
+    <Compile Include="Navigation\Serialization\NavigationUrlParameterSerializer.cs" />
+    <Compile Include="Navigation\NavigationArgs.cs" />
+    <Compile Include="Navigation\NavigationDirection.cs" />
     <Compile Include="Navigation\Urls\NavigationUrl.cs" />
     <Compile Include="Navigation\Urls\NavigationUrlQuery.cs" />
     <Compile Include="Navigation\Urls\NavigationUrlSegment.cs" />
-    <Compile Include="Navigation\Attributed\INavigationRoute.cs" />
-    <Compile Include="Navigation\Attributed\MethodNavigationRoute.cs" />
-    <Compile Include="Navigation\Attributed\NavigationRouter.cs" />
-    <Compile Include="Navigation\Serialization\INavigationUrlParameterSerializer.cs" />
-    <Compile Include="Navigation\Serialization\NavigationUrlParameterSerializer.cs" />
-    <Compile Include="Navigation\Attributed\Attributes\DefaultRouteAttribute.cs" />
-    <Compile Include="Navigation\Attributed\Attributes\RouteAttribute.cs" />
-    <Compile Include="Navigation\Attributed\Attributes\SubRouteAttribute.cs" />
-    <Compile Include="Navigation\Urls\NavigationUrlExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Commands\" />
@@ -59,9 +53,7 @@
     <Folder Include="Extensions\" />
     <Folder Include="Assignments\" />
     <Folder Include="Navigation\Urls\" />
-    <Folder Include="Navigation\Attributed\" />
     <Folder Include="Navigation\Serialization\" />
-    <Folder Include="Navigation\Attributed\Attributes\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
 </Project>

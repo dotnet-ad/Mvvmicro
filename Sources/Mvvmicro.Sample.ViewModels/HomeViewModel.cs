@@ -8,12 +8,12 @@
 
 	public class HomeViewModel : ViewModelBase
 	{
-		public HomeViewModel(IWeatherApi api, IDatabase database, INavigationRouter navigation) : base(navigation)
+		public HomeViewModel(IWeatherApi api, IDatabase database)
 		{
 			this.api = api;
 			this.database = database;
 			this.UpdateCommand = new AsyncRelayCommand(ExecuteUpdateCommand);
-			this.SelectDayCommand = new AsyncRelayCommand<DayItemViewModel>(ExecuteSelectDayCommand);
+			this.SelectDayCommand = new RelayCommand<DayItemViewModel>(ExecuteSelectDayCommand);
 		}
 
 		#region Fields
@@ -56,7 +56,7 @@
 
 		#region Commands
 
-		public AsyncRelayCommand UpdateCommand { get; }
+		public IRelayCommand UpdateCommand { get; }
 
 		private async Task ExecuteUpdateCommand(CancellationToken token)
 		{
@@ -68,11 +68,14 @@
 			}
 		}
 
-		public AsyncRelayCommand<DayItemViewModel> SelectDayCommand { get; }
+		public RelayCommand<DayItemViewModel> SelectDayCommand { get; }
 
-		private Task ExecuteSelectDayCommand(DayItemViewModel day, CancellationToken token)
+		private void ExecuteSelectDayCommand(DayItemViewModel day)
 		{
-			return this.Navigation.NavigateToAsync($"/Day?id={day.Identifier}");
+			this.Navigate<DayViewModel>((s) =>
+			{
+				s.Query.Set(day.Identifier, "id");
+			});
 		}
 
 		#endregion

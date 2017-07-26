@@ -1,5 +1,5 @@
 ﻿using System;
-
+using Mvvmicro.Sample.ViewModels;
 using UIKit;
 
 namespace Mvvmicro.Sample.Views.iOS
@@ -11,16 +11,24 @@ namespace Mvvmicro.Sample.Views.iOS
 			// Note: this .ctor should not contain any initialization logic.
 		}
 
-		public override void ViewDidLoad()
+
+		private HomeViewModel ViewModel;
+
+		public override void ViewDidAppear(bool animated)
 		{
-			base.ViewDidLoad();
-			// Perform any additional setup after loading the view, typically from a nib.
+			base.ViewDidAppear(animated);
+			this.ViewModel.NavigationRequested += OnNavigation;
 		}
 
-		public override void DidReceiveMemoryWarning()
+		public override void ViewWillDisappear(bool animated)
 		{
-			base.DidReceiveMemoryWarning();
-			// Release any cached data, images, etc that aren't in use.
+			base.ViewDidAppear(animated);
+			this.ViewModel.NavigationRequested -= OnNavigation;
+		}
+
+		private void OnNavigation(object sender, NavigationArgs nav)
+		{
+			this.PerformSegue(nav.Segment.Value, this);
 		}
 	}
 }

@@ -40,161 +40,46 @@ public class HomeViewModel : Observable
 
 ### ViewModelBase
 
-An `Observable` object that adds navigation elements. This should be the base class for the view models associated to your application screens.
-
-* `NavigateBackCommand` : a command that triggers `NavigateBackAsync` on the view model `INavigation`.
+An `Observable` object that adds navigation elements. This should be the base class for the view models associated to your application screens. A `NavigationRequested` event is available for your view to subscribe and react to.
 
 ```csharp
 public class HomeViewModel : ViewModelBase
 {
-    public HomeViewModel(INavigation nav) : base(nav) {}
-    
-    private async Task NavigateDetailAsync(int id)
+    private void NavigateDetail(int id)
     {
-    	// ...
-    	await this.Navigation.NavigateAsync($"/Details?id={id}");
-    }
-    
-    private Task NavigateBackAsync()
-    {
-    	// ...
-    	this.NavigateBackCommand().TryExecute(null);
+    	// "/DayViewModel?id=467674"
+    	this.Navigate<DayViewModel>((s) =>
+		{
+			s.Query.Set(day.Identifier, "id");
+		});
     }
 }
 ```
 
-### Navigation router
-
-#### INavigationRouter
-
-The router abstracts the navigation of your app through an interpreter of `NavigationUrl`. It's up to you to provide an implementation to your view models by implementing its two methods `NavigateToAsync(NavigationUrl url)` and `NavigateBackAsync()`.
-
-**Example:**
-
 ```csharp
-public class UwpNavigation : INavigation
-{
-		public UwpNavigation(Frame frame)
-		{
-			this.frame = frame;
-		}
-		
-		private Frame frame;
-
-		public bool CanNavigateBack => this.frame.CanGoBack;
-
-		public Task NavigateToAsync(NavigationUrl url)
-		{
-			var segment = url.Segments.First();
-			var pageType = Type.GetType($"MyApp.Pages.{segment.Value}Page, MyApp.Pages"); 
-			this.frame.Navigate(pageType, segment.Query);
-			return Task.FromResult(true);
-		}
-
-		public Task NavigateBackAsync()
-		{
-			this.frame.GoBack();
-			return Task.FromResult(true);
-		}
-}
-```
-
-Then, to trigger a navigation from your ViewModel layer, use the navigate method from the router.
-
-```csharp
-this.Navigation.NavigateToAsync($"/Product?id={5}");
-```
-
-```csharp
-var url = new NavigationUrl("/Product").AddArg("id",5)
-this.Navigation.NavigateToAsync(url);
-```
-
-#### Navigation url matching
-
-To create more complex interpreter, several matching methods are also available from `NavigationUrl`.
-
-```csharp
-var url = new NavigationUrl("/Products/Details?v1=4&v2=6");
-if(url.Match("/Products/Details")) // True
+public class HomeViewController : UIViewController
 {
 	// ...
-}
-if(url.StartsWith("/Products")) // True
-{
-	// ...
-}
-```
 
-#### NavigationRouter
+	public HomeViewModel ViewModel { get; } = new HomeViewModel();
 
-A more complete implementation of `INavigationRouter` is also provided for helping with url matching mapped to method execution. 
-
-Each route method should be registered through a `RouteAttribute` that decorates you method.
-
-```csharp
-public class SampleRouter : NavigationRouter
-{
-	[DefaultRoute]
-	public void NavigateToDefault() 
+	public override void ViewDidAppear(bool animated)
 	{
-		// When no other router matches, you can provide a default route.
-		// It's a right place to show a popup to the user
-	}
-
-	[Route("/")]
-	public void NavigateToRoot() 
-	{ 
-		// Reset view to the root view of your app and reset your navigation state.
-	}
-
-	[Route("/tab1/**")]
-	public void NavigateToSubroute([SubRoute]NavigationUrl suburl) 
-	{ 
-		// With a '**' ending segment, all urls starting like the registered url will match
-		// The suburl parameter will be the remaining url ("/tab1/detail" => "/detail")
-		// You can have a sub navigation router by tab for example
-		// Note the 'SubRoute' attribute that indicates which parameters will be the subroute
-	}
-
-	[Route("/detailWithParameters")]
-	public void NavigateToDetailWithParameters(int id, string description) 
-	{ 
-		// parameters will be extracted from query string 
-		// example: "/detailWithParameters?id=5&description=sample"
-		//          => { id = 5, description = "sample" }
-	}
-
-	[Route("/detailWithQuery")]
-	public void NavigateToDetailWithQuery(NavigationUrlQuery query) 
-	{ ing description) 
-	{ 
-		// the query string of the last segment will be given
-		// you can then extract arguments like 'query.Get<int>("id")'
-	}
-
-	[Route("/detailWithUrl")]
-	public void NavigateToDetailWithUrl(NavigationUrl url) 
-	{ 
-		// the entire matched url will be given as parameter
-	}
-
-	[Route("/detailWithPath/{id}/{description}")]
-	public void NavigateToDetailWithPath(int id, string description) 
-	{ 
-		// parameters will be extracted from query string 
-		// example: "/detailWithParameters/5/sample"
-		//          => { id = 5, description = "sample" }
+		base.ViewDidAppear(animated);
+		this.ViewModel.NavigationRequested += OnNavigation;
 	}
 	
-	public override bool CanNavigateBack
+	public override void ViewWillDisappear(bool animated)
 	{
-	   get { /* Indicates whether a back navigation is available */ }
+		base.ViewDidAppear(animated);
+		this.ViewModel.NavigationRequested -= OnNavigation;
 	}
 	
-	public override Task NavigateBackAsync() { /* Cancel previous navigation */ }
+	private void OnNavigation(object sender, NavigationArgs nav)
+	{
+		this.PerformSegue(nav.Segment.Value, this);
+	}
 }
-
 ```
 
 ### Relay commands
@@ -225,7 +110,8 @@ public class HomeViewModel : ViewModelBase
 Bellow, you will find a list of tools that can be used in combination with **Mvvmicro** to build great mobile or desktop application projects.
 
 * [Autofac](https://autofac.org/) : Inversion of control.
-* [Wires](https://github.com/aloisdeniel/Wires) : View bindings for Xamarin.
+* [AutoFindViews](https://github.com/aloisdeniel/AutoFindViews) : Auto extract Xamarin.Android layout elements from declared identifiers.
+* [StaticBind](https://github.com/aloisdeniel/StaticBind) : View data bindings for Xamarin.
 * [Refit](https://github.com/paulcbetts/refit) : Rest client implementation generator.
 * [LiteDB](http://www.litedb.org/) : Small embedded NoSQL database.
 * [Xamarin Plugins](https://github.com/xamarin/XamarinComponents) : Various abstractions for platform specific behaviours

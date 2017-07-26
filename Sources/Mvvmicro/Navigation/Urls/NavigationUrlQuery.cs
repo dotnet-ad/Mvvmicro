@@ -1,10 +1,10 @@
-﻿using System.Reflection;
-namespace Mvvmicro
+﻿namespace Mvvmicro
 {
 	using System;
 	using System.Collections.Generic;
 	using System.Runtime.CompilerServices;
 	using Mvvmicro.Extensions;
+	using System.Reflection;
 
 	/// <summary>
 	/// A query part of an url segment (ie:'?arg=4&other=5' in '/Main/Detail?arg=4&other=5').
@@ -59,7 +59,11 @@ namespace Mvvmicro
 		/// <param name="value">Value.</param>
 		/// <param name="key">Key.</param>
 		/// <typeparam name="T">The 1st type parameter.</typeparam>
-		public void Set<T>(T value, [CallerMemberName] string key = null) => parameters[key] = serializer.Serialize(value);
+		public NavigationUrlQuery Set<T>(T value, [CallerMemberName] string key = null)
+		{
+			parameters[key] = serializer.Serialize(value);
+			return this;
+		}
 
 		/// <summary>
 		/// Get the value of the argument with the given key.
