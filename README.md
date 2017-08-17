@@ -82,9 +82,17 @@ public class HomeViewController : UIViewController
 }
 ```
 
-### Relay commands
+### Commands
 
 The `(Async)RelayCommand` classes are helpers for creating `ICommand` synchronous and asynchronous implementations on the fly from methods. An alternate version `(Async)RelayCommand<T>` with a typed parameterer is also provided. 
+
+The advantages of using `IAsyncRelayCommand` is :
+
+* **Executing state** : `IsExecuting` property, that can be bound for updating your UI (activity indicators and so on).
+* **Managing lifecycle** : `LastSuccededExecution` property, for managing lifecycle of display last successful execution time.
+* **Failure management** : `ExecutionFailed` event, thrown whenever a
+* **Cancellation** : `Cancel()` call will cancel the tokens given as a parameter of the execution method. 
+* **Single execution** : when already running, a new execution can't be triggered.
 
 **Example:**
 
@@ -105,11 +113,23 @@ public class HomeViewModel : ViewModelBase
 }
 ```
 
+### Dependency container
+
+A deliberately basic container is provided for managing your dependencies. Declarations may seem too verbose compared to other popular IoC frameworks (*Autofac, Ninject, ...*), but **it doesn't rely on any reflection (which can has a cost in a mobile environment)** for injecting instances into newly created instances.
+
+```csharp
+Container.Default.Register<IApi>((c) => new WebApi(), isInstance: true); // A unique instance for entire lifecycle
+Container.Default.Register((c) => new HomeViewModel(c.Get<IApi>())); // a new instance is created each time the type is requested
+
+// ...
+
+var homeViewModel = Container.Default.Get<HomeViewModel>();
+```
+
 ## Complementary tools
 
 Bellow, you will find a list of tools that can be used in combination with **Mvvmicro** to build great mobile or desktop application projects.
 
-* [Autofac](https://autofac.org/) : Inversion of control.
 * [AutoFindViews](https://github.com/aloisdeniel/AutoFindViews) : Auto extract Xamarin.Android layout elements from declared identifiers.
 * [StaticBind](https://github.com/aloisdeniel/StaticBind) : View data bindings for Xamarin.
 * [Refit](https://github.com/paulcbetts/refit) : Rest client implementation generator.
