@@ -32,6 +32,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="NavigationTest.cs" />
+    <Compile Include="ObservableTests.cs" />
+    <Compile Include="ObserverTests.cs" />
+    <Compile Include="Entities\HomeViewModel.cs" />
+    <Compile Include="Entities\HomeView.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -41,6 +45,9 @@
       <Project>{83316963-271B-4D3D-9EDD-A2114E21D821}</Project>
       <Name>Mvvmicro</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Entities\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

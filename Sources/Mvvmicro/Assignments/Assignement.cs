@@ -1,13 +1,15 @@
 ﻿namespace Mvvmicro
 {
-	using System.Collections.Generic;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq.Expressions;
 
 	/// <summary>
 	/// The result of an assignment of an Observable property.
 	/// </summary>
-	public class Assignement<T>
+    public class Assignement<TObservable,T> where TObservable : Observable
 	{
-		public Assignement(Observable owner, string property, T oldValue, T newValue)
+		public Assignement(TObservable owner, string property, T oldValue, T newValue)
 		{
 			this.Owner = owner;
 			this.PropertyName = property;
@@ -20,7 +22,7 @@
 		/// Gets the Obserbable object that has the updated property.
 		/// </summary>
 		/// <value>The owner.</value>
-		public Observable Owner { get; }
+		public TObservable Owner { get; }
 
 		/// <summary>
 		/// Gets the name of the property that has been assigned.
@@ -51,11 +53,13 @@
 		/// </summary>
 		/// <returns>The raise.</returns>
 		/// <param name="properties">Properties.</param>
-		public Assignement<T> ThenRaise(params string[] properties)
+        public Assignement<TObservable,T> ThenRaise<TProperty>(Expression<Func<TProperty>> property)
 		{
 			if(this.HasChanged)
-			{
-				this.Owner.RaiseProperties(properties);
+            {
+                var expression = (MemberExpression)property.Body;
+                var propertyName = expression.Member.Name;
+				this.Owner.RaiseProperties(propertyName);
 			}
 
 			return this;
@@ -66,7 +70,7 @@
 		/// </summary>
 		/// <returns>The raise can execute changed.</returns>
 		/// <param name="commands">Commands.</param>
-		public Assignement<T> ThenRaiseCanExecuteChanged(params IRelayCommand[] commands)
+		public Assignement<TObservable,T> ThenRaiseCanExecuteChanged(params IRelayCommand[] commands)
 		{
 			if (this.HasChanged)
 			{

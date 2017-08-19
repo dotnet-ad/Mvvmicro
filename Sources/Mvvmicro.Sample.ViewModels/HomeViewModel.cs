@@ -16,7 +16,9 @@
 			this.SelectDayCommand = new RelayCommand<DayItemViewModel>(ExecuteSelectDayCommand);
 		}
 
-		#region Fields
+        #region Fields
+
+        private string title;
 
 		private double longitude, latitude;
 
@@ -30,9 +32,15 @@
 
 		private readonly IWeatherApi api;
 
-		#endregion
+        #endregion
 
-		#region Bindable properties
+        #region Bindable properties
+
+        public string Title
+        {
+            get { return this.title; }
+            set { this.Set(ref this.title, value); }
+        }
 
 		public double Longitude
 		{
