@@ -51,6 +51,8 @@
             this.factories[typeof(T)] = new Tuple<bool, Func<object>>(isInstance, () => factory(this));
         }
 
+        public bool IsRegistered<T>() => factories.ContainsKey(typeof(T));
+
         public T New<T>() => (T)this.factories[typeof(T)].Item2();
 
         #endregion
