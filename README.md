@@ -101,7 +101,7 @@ The advantages of using `IAsyncRelayCommand` is :
 ```csharp
 public class HomeViewModel : ViewModelBase
 {
-    public HomeViewModel(INavigation nav) : base(nav)
+    public HomeViewModel()
     {
     	this.UpdateCommand = new AsyncRelayCommand(ExecuteUpdateCommandAsync);
     }
