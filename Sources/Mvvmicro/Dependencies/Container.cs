@@ -53,6 +53,21 @@
 
         public bool IsRegistered<T>() => factories.ContainsKey(typeof(T));
 
+        public void Unregister<T>()
+        {
+            if (this.IsRegistered<T>())
+            {
+                instances[typeof(T)] = null;
+                factories[typeof(T)] = null;
+            }
+        }
+
+        public void WipeContainer()
+        {
+            this.instances = new Dictionary<Type, object>();
+            this.factories = new Dictionary<Type, Tuple<bool, Func<object>>>();
+        }
+
         public T New<T>() => (T)this.factories[typeof(T)].Item2();
 
         #endregion
