@@ -38,5 +38,16 @@
         /// <returns>The new.</returns>
         /// <typeparam name="T">The 1st type parameter.</typeparam>
         T New<T>();
+
+        /// <summary>
+        /// Unregister the factory for a given instance type, and deletes any existing instance of this type.
+        /// </summary>
+        /// <typeparam name="T">The 1st type parameter.</typeparam>
+        void Unregister<T>();
+
+        /// <summary>
+        /// Wipes the container of all factories and instances.
+        /// </summary>
+        void WipeContainer();
     }
 }
