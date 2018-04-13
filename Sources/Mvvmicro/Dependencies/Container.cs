@@ -25,26 +25,34 @@
 
         #endregion
 
+        #region Properties
+
+        public IEnumerable<Type> RegisteredTypes => factories.Keys;
+
+        #endregion
+
         #region Methods
 
-        public T Get<T>()
+        public object Get(Type type)
         {
-            var factory = this.factories[typeof(T)];
+            var factory = this.factories[type];
 
             if (factory.Item1)
             {
-                if (instances.TryGetValue(typeof(T), out object instance))
+                if (instances.TryGetValue(type, out object instance))
                 {
-                    return (T)instance;
+                    return instance;
                 }
 
                 var newInstance = factory.Item2();
-                instances[typeof(T)] = newInstance;
-                return (T)newInstance;
+                instances[type] = newInstance;
+                return newInstance;
             }
 
-            return (T)factory.Item2();
+            return factory.Item2();
         }
+
+        public T Get<T>() => (T)Get(typeof(T));
 
         public void Register<T>(Func<IContainer, T> factory, bool isInstance = false)
         {
@@ -62,13 +70,15 @@
             }
         }
 
+        public object New(Type type) => this.factories[type].Item2();
+
+        public T New<T>() => (T)this.New(typeof(T));
+
         public void WipeContainer()
         {
             this.instances = new Dictionary<Type, object>();
             this.factories = new Dictionary<Type, Tuple<bool, Func<object>>>();
         }
-
-        public T New<T>() => (T)this.factories[typeof(T)].Item2();
 
         #endregion
     }
