@@ -50,6 +50,7 @@
     <Compile Include="Dependencies\Container.cs" />
     <Compile Include="Observers\NotifyPropertyObserver.cs" />
     <Compile Include="Observers\ObserversExtensions.cs" />
+    <Compile Include="IViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Commands\" />
