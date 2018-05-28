@@ -51,6 +51,9 @@
     <Compile Include="Observers\NotifyPropertyObserver.cs" />
     <Compile Include="Observers\ObserversExtensions.cs" />
     <Compile Include="IViewModel.cs" />
+    <Compile Include="Navigation\Urls\NavigationUrlBuilder.cs" />
+    <Compile Include="Navigation\Urls\NavigationUrlParser.cs" />
+    <Compile Include="Navigation\Urls\NavigationUrlQueryParser.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Commands\" />

@@ -27,6 +27,81 @@
 			url.AddArg("a3", true);
 			const string expected = "/Main/Detail?a1=E%20R&a2=5&a3=True";
 			Assert.AreEqual(expected, url.ToString());
-		}
+        }
+
+        [Test()]
+        public void NavigationBuilder_Building_ValidUrl()
+        {
+            var url = new NavigationUrlBuilder("Main").WithSegment("Detail").Build((q) => q.Set("E R", "a1").Set(5, "a2").Set(true, "a3"));
+            const string expected = "/Main/Detail?a1=E%20R&a2=5&a3=True";
+            Assert.AreEqual(expected, url.ToString());
+        }
+
+        [Test()]
+        public void NavigationParser_Parsing_ValidUrl()
+        {
+            var parser = new NavigationUrlParser("/Main/Detail/03?a1=E%20R&a2=5&a3=True");
+
+            string a1 = null;
+            int a2 = 0;
+            bool a3 = false;
+
+            Assert.IsTrue(parser.WithSegment("Main")
+                                .WithSegment("Detail")
+                                .WithDynamicSegment(out int id)
+                                .WithQuery((q) => q.WithRequired("a1", out a1).WithRequired("a2", out a2).WithRequired("a3", out a3))
+                                .IsSuccess);
+
+            Assert.AreEqual(3, id);
+            Assert.AreEqual("E R", a1);
+            Assert.AreEqual(5, a2);
+            Assert.AreEqual(true, a3);
+
+        }
+
+        [Test()]
+        public void NavigationParser_Parsing_InvalidSegment()
+        {
+            var parser = new NavigationUrlParser("/Main/Detail/03?a1=E%20R&a2=5&a3=True");
+
+            Assert.IsFalse(parser.WithSegment("Main")
+                                 .WithSegment("Woops")
+                                 .IsSuccess);
+        }
+
+        [Test()]
+        public void NavigationParser_Parsing_InvalidDynamicSegment()
+        {
+            var parser = new NavigationUrlParser("/Main/Detail/03?a1=E%20R&a2=5&a3=True");
+
+            Assert.IsFalse(parser.WithSegment("Main")
+                                 .WithSegment("Detail")
+                                 .WithDynamicSegment(out bool badType)
+                                 .IsSuccess);
+        }
+
+        [Test()]
+        public void NavigationParser_Parsing_MissingRequiredQueryArgument()
+        {
+            var parser = new NavigationUrlParser("/Main/Detail/03?a1=E%20R&a2=5&a3=True");
+
+            Assert.IsFalse(parser.WithSegment("Main")
+                                 .WithSegment("Detail")
+                                 .WithDynamicSegment(out int id)
+                                 .WithQuery((q) => q.WithRequired("missing", out string missing))
+                                 .IsSuccess);
+        }
+
+        [Test()]
+        public void NavigationParser_Parsing_MissingOptionalQueryArgument()
+        {
+            var parser = new NavigationUrlParser("/Main/Detail/03?a1=E%20R&a2=5&a3=True");
+
+            Assert.IsTrue(parser.WithSegment("Main")
+                                 .WithSegment("Detail")
+                                 .WithDynamicSegment(out int id)
+                                 .WithQuery((q) => q.WithOptional("missing", (string missing) => { }))
+                                 .IsSuccess);
+        }
 	}
 }

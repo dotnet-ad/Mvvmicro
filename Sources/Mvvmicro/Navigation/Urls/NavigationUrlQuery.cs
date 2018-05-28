@@ -110,8 +110,12 @@
 			string stringValue;
 			if(parameters.TryGetValue(key, out stringValue))
 			{
-                result = serializer.Deserialize(stringValue, t);
-                return true;
+                try
+                {
+                    result = serializer.Deserialize(stringValue, t);
+                    return true;
+                }
+                catch (Exception) {}
 			}
 
             result = null;
