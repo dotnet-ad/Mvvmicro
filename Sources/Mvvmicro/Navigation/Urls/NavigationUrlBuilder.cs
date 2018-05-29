@@ -8,6 +8,12 @@
     /// </summary>
     public class NavigationUrlBuilder
     {
+        private NavigationUrlBuilder(NavigationUrl url)
+        {
+            this.Root = url.Segments.FirstOrDefault()?.Value;
+            this.url = url;
+        }
+
         public NavigationUrlBuilder(string root)
         {
             this.Root = root;
@@ -20,14 +26,15 @@
 
         public NavigationUrlBuilder WithSegment(string segment)
         {
-            this.url = new NavigationUrl(url.Segments.Concat(new[] { new NavigationUrlSegment(segment) }).ToArray());
-            return this;
+            var newUrl = new NavigationUrl(url.Segments.Concat(new[] { new NavigationUrlSegment(segment) }).ToArray());
+            return new NavigationUrlBuilder(newUrl);
         }
 
         public NavigationUrl Build(Action<NavigationUrlQuery> query = null)
         {
-            query?.Invoke(this.url.Segments.Last().Query);
-            return this.url;
+            var newUrl = new NavigationUrl(this.url.Segments);
+            query?.Invoke(newUrl.Segments.Last().Query);
+            return newUrl;
         }
     }
 }
