@@ -32,9 +32,19 @@
         [Test()]
         public void NavigationBuilder_Building_ValidUrl()
         {
-            var url = new NavigationUrlBuilder("Main").WithSegment("Detail").Build((q) => q.Set("E R", "a1").Set(5, "a2").Set(true, "a3"));
+            var main = new NavigationUrlBuilder("Main");
+            var url = main.WithSegment("Detail").Build((q) => q.Set("E R", "a1").Set(5, "a2").Set(true, "a3"));
             const string expected = "/Main/Detail?a1=E%20R&a2=5&a3=True";
             Assert.AreEqual(expected, url.ToString());
+
+            var other = main.WithSegment("Other");
+            url = other.Build();
+            const string otherExpected = "/Main/Other";
+            Assert.AreEqual(otherExpected, url.ToString());
+
+            url = other.WithSegment("Finally").Build();
+            const string finalyExpected = "/Main/Other/Finally";
+            Assert.AreEqual(finalyExpected, url.ToString());
         }
 
         [Test()]
