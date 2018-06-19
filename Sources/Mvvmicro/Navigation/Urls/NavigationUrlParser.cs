@@ -88,6 +88,34 @@
             return new NavigationUrlParser(this.currentSegment, this.isSuccess, this.url);
         }
 
+        public NavigationUrlParser WithDynamicSegment(out Guid value)
+        {
+            value = Guid.Empty;
+
+            if (this.isSuccess)
+            {
+                if (this.currentSegment < this.url.Segments.Length)
+                {
+                    try
+                    {
+                        var current = this.CurrentSegment;
+                        value = new Guid(current);
+                        this.currentSegment++;
+                    }
+                    catch (Exception)
+                    {
+                        this.isSuccess = false;
+                    }
+                }
+                else
+                {
+                    this.isSuccess = false;
+                }
+            }
+
+            return new NavigationUrlParser(this.currentSegment, this.isSuccess, this.url);
+        }
+
         public NavigationUrlParser WithQuery(Action<NavigationUrlQueryParser> arguments)
         {
             if (this.isSuccess)
