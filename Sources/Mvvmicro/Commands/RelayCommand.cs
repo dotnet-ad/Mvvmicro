@@ -38,13 +38,13 @@
 
 		public bool CanExecute(object parameter) => this.canExecute();
 
-		public void Execute(object parameter) => this.execute();
+		public void Execute(object parameter) => this.TryExecute(parameter);
 
 		public bool TryExecute(object parameter = null)
 		{
 			if (this.CanExecute(parameter))
 			{
-				this.Execute(parameter);
+				this.execute();
 				return true;
 			}
 
