@@ -38,7 +38,7 @@
 
 		public bool CanExecute(object parameter) => this.canExecute();
 
-		public void Execute(object parameter) => this.TryExecute();
+		public void Execute(object parameter) => this.TryExecute(parameter);
 
 		public bool TryExecute(object parameter = null)
 		{
