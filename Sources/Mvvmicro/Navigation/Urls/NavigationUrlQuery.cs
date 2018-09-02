@@ -26,6 +26,14 @@
 			}
 		}
 
+        public NavigationUrlQuery(NavigationUrlQuery other)
+        {
+            foreach (var pair in other.parameters)
+            {
+                this.parameters[pair.Key] = pair.Value;
+            }
+        }
+
 		#endregion
 
 		#region Properties
@@ -46,7 +54,7 @@
 
 		private INavigationUrlParameterSerializer serializer = new NavigationUrlParameterSerializer();
 
-		private Dictionary<string, string> parameters = new Dictionary<string, string>();
+        private Dictionary<string, string> parameters = new Dictionary<string, string>();
 
 		#endregion
 

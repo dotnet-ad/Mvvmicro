@@ -18,6 +18,12 @@
 			this.Value = value;
 		}
 
+        public NavigationUrlSegment(string value, NavigationUrlQuery query)
+        {
+            this.Query = query;
+            this.Value = value;
+        }
+
 		#region Fields
 
 		private INavigationUrlParameterSerializer serializer = new NavigationUrlParameterSerializer();

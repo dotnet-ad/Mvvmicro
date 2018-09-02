@@ -23,7 +23,7 @@
 		/// Initializes a new instance of the <see cref="T:Mvvmicro.NavigationUrl"/> class.
 		/// </summary>
 		/// <param name="segments">Segments.</param>
-		public NavigationUrl(NavigationUrlSegment[] segments)
+        public NavigationUrl(NavigationUrlSegment[] segments)
 		{
 			this.Segments = segments.ToArray();
 		}
