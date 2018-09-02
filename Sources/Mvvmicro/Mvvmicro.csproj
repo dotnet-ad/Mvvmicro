@@ -46,6 +46,8 @@
     <Compile Include="Navigation\Urls\NavigationUrl.cs" />
     <Compile Include="Navigation\Urls\NavigationUrlQuery.cs" />
     <Compile Include="Navigation\Urls\NavigationUrlSegment.cs" />
+    <Compile Include="Dependencies\IContainer.cs" />
+    <Compile Include="Dependencies\Container.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Commands\" />
@@ -54,6 +56,7 @@
     <Folder Include="Assignments\" />
     <Folder Include="Navigation\Urls\" />
     <Folder Include="Navigation\Serialization\" />
+    <Folder Include="Dependencies\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
 </Project>
