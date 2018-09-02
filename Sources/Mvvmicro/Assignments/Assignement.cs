@@ -23,14 +23,20 @@
 
 		public T NewValue { get; }
 
-		public void ThenRaise(params string[] properties) => this.Owner.RaiseProperties(properties);
+		public Assignement<T> ThenRaise(params string[] properties)
+		{
+			this.Owner.RaiseProperties(properties);
+			return this;
+		}
 
-		public void ThenRaiseCanExecuteChanged(params IRelayCommand[] commands) 
+		public Assignement<T> ThenRaiseCanExecuteChanged(params IRelayCommand[] commands) 
 		{
 			foreach (var c in commands)
 			{
 				c.RaiseCanExecuteChanged();
 			}
+
+			return this;
 		}
 
 	}

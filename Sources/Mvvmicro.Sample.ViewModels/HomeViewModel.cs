@@ -72,7 +72,7 @@
 
 		private Task ExecuteSelectDayCommand(DayItemViewModel day, CancellationToken token)
 		{
-			return this.NavigateAsync($"Day?id={day.Identifier}");
+			return this.Navigation.NavigateToAsync($"Day?id={day.Identifier}");
 		}
 
 		#endregion

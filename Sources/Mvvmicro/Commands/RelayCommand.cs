@@ -40,10 +40,15 @@
 
 		public void Execute(object parameter) => this.execute();
 
-		public void TryExecute(object parameter = null)
+		public bool TryExecute(object parameter = null)
 		{
 			if (this.CanExecute(parameter))
+			{
 				this.Execute(parameter);
+				return true;
+			}
+
+			return false;
 		}
 
 		#endregion

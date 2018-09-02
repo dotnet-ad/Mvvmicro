@@ -4,6 +4,6 @@
 	{
 		void RaiseCanExecuteChanged();
 
-		void TryExecute(object parameter);
+		bool TryExecute(object parameter);
 	}
 }

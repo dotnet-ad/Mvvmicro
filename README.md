@@ -10,19 +10,15 @@ Available on NuGet
 
 ## Usage
 
-### ViewModelBase
+### Observable
 
-A base implementation of `INotifyPropertyChanged` with helper method for raising property changes and base navigation elements.
+A base implementation of `INotifyPropertyChanged` with helper method for raising property changes.
 
-* `Set<T>(ref T field, T newValue, [auto] string propertyName)` : sets the value of the referenced field with the given new value and raises `PropertyChanged` even if its different value that the current one. An `Assignment<T>` will be returned to indicate the change status with `HasChanged`. If the value changed, this object also allows you in to raise other linked properties that depends on the current one with `ThenRaise(params string[] dependencies)` (*use* `nameof(<Name>)` *to avoid magic strings in your code*).
-
-* `NavigateAsync(string url)` : triggers a navigation through the injected `INavigation`.
+* `Set<T>(ref T field, T newValue, [auto] string propertyName)` : sets the value of the referenced field with the given new value and raises `PropertyChanged` even if its different value that the current one. An `Assignment<T>` will be returned to indicate the change status with `HasChanged`. If the value changed, this object also allows you in to raise other linked properties or commands that depends on the current one with `ThenRaise` (*use* `nameof(<Name>)` *to avoid magic strings in your code*).
 
 ```csharp
-public class HomeViewModel : ViewModelBase
+public class HomeViewModel : Observable
 {
-    public HomeViewModel(INavigation nav) : base(nav) {}
-    
     private string firstname, lastname;
     
     public string Firstname
@@ -42,10 +38,34 @@ public class HomeViewModel : ViewModelBase
 }
 ```
 
+### ViewModelBase
+
+An `Observable` object that adds navigation elements. This should be the base class for the view models associated to your application screens.
+
+* `NavigateBackCommand` : a command that triggers `NavigateBackAsync` on the view model `INavigation`.
+
+```csharp
+public class HomeViewModel : ViewModelBase
+{
+    public HomeViewModel(INavigation nav) : base(nav) {}
+    
+    private async Task NavigateDetailAsync(int id)
+    {
+    	// ...
+    	await this.Navigation.NavigateAsync($"/Details?id={id}");
+    }
+    
+    private Task NavigateBackAsync()
+    {
+    	// ...
+    	this.NavigateBackCommand().TryExecute(null);
+    }
+}
+```
+
 ### INavigation
 
-The navigation abstract the navigation of your app through an interpreter of URLs. It's up to you to provide an implementation to your view models by implementing its two methods `NavigateAsync(NavigationUrl url)` and `NavigateBackAsync()`.
-
+The navigation abstract the navigation of your app through an interpreter of URLs. It's up to you to provide an implementation to your view models by implementing its two methods `NavigateToAsync(NavigationUrl url)` and `NavigateBackAsync()`.
 
 **Example:**
 
@@ -59,7 +79,9 @@ public class UwpNavigation : INavigation
 		
 		private Frame frame;
 
-		public Task NavigateAsync(NavigationUrl url)
+		public bool CanNavigateBack => CanGoBack;
+
+		public Task NavigateToAsync(NavigationUrl url)
 		{
 			var segment = url.Segments.First();
 			var pageType = Type.GetType($"MyApp.Pages.{segment.Value}Page, MyApp.Pages"); 

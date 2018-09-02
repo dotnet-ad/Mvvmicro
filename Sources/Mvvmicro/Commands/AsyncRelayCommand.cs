@@ -90,10 +90,15 @@
 
 		public bool CanExecute(object parameter) => !this.IsExecuting && this.canExecute();
 
-		public void TryExecute(object parameter = null)
+		public bool TryExecute(object parameter = null)
 		{
 			if (this.CanExecute(parameter))
+			{
 				this.Execute(parameter);
+				return true;
+			}
+
+			return false;
 		}
 
 		#endregion
