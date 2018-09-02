@@ -14,6 +14,13 @@
 		bool CanNavigateBack { get; }
 
 		/// <summary>
+		/// Indicates whether this <see cref="T:Mvvmicro.INavigation"/> can navigate to the given url.
+		/// </summary>
+		/// <returns><c>true</c>, if navigate to was caned, <c>false</c> otherwise.</returns>
+		/// <param name="url">URL.</param>
+		bool CanNavigateTo(NavigationUrl url);
+
+		/// <summary>
 		/// Navigates to the specified url.
 		/// </summary>
 		/// <returns>The async.</returns>

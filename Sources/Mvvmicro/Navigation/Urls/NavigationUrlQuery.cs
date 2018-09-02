@@ -1,4 +1,5 @@
-﻿namespace Mvvmicro
+﻿using System.Reflection;
+namespace Mvvmicro
 {
 	using System;
 	using System.Collections.Generic;
@@ -21,7 +22,7 @@
 		{
 			foreach (var pair in parameters)
 			{
-				this.parameters[pair.Key] = Serialize(pair.Value);
+				this.parameters[pair.Key] = this.serializer.Serialize(pair.Value);
 			}
 		}
 
@@ -43,26 +44,9 @@
 
 		#region Fields
 
+		private INavigationUrlParameterSerializer serializer = new NavigationUrlParameterSerializer();
+
 		private Dictionary<string, string> parameters = new Dictionary<string, string>();
-
-		#endregion
-
-		#region Argument serialization
-
-		/// <summary>
-		/// Serialize the specified arg into a string.
-		/// </summary>
-		/// <returns>The serialize.</returns>
-		/// <param name="arg">Argument.</param>
-		private string Serialize(object arg) => Convert.ToString(arg);
-
-		/// <summary>
-		/// Deserialize the specified arg from string to the given type.
-		/// </summary>
-		/// <returns>The deserialize.</returns>
-		/// <param name="arg">Argument.</param>
-		/// <param name="t">T.</param>
-		private object Deserialize(string arg, Type t) => Convert.ChangeType(arg, t);
 
 		#endregion
 
@@ -75,7 +59,7 @@
 		/// <param name="value">Value.</param>
 		/// <param name="key">Key.</param>
 		/// <typeparam name="T">The 1st type parameter.</typeparam>
-		public void Set<T>(T value, [CallerMemberName] string key = null) => parameters[key] = Serialize(value);
+		public void Set<T>(T value, [CallerMemberName] string key = null) => parameters[key] = serializer.Serialize(value);
 
 		/// <summary>
 		/// Get the value of the argument with the given key.
@@ -83,7 +67,30 @@
 		/// <returns>The get.</returns>
 		/// <param name="key">Key.</param>
 		/// <typeparam name="T">The 1st type parameter.</typeparam>
-		public T Get<T>([CallerMemberName] string key = null) => (T)Deserialize(parameters[key], typeof(T));
+		public T Get<T>([CallerMemberName] string key = null) => (T)this.Get(typeof(T), key);
+
+		/// <summary>
+		/// Get the value of the argument with the given key.
+		/// </summary>
+		/// <returns>The get.</returns>
+		/// <param name="t">T.</param>
+		/// <param name="key">Key.</param>
+		public object Get(Type t, [CallerMemberName] string key = null)
+		{
+			string stringValue;
+			if(parameters.TryGetValue(key, out stringValue))
+			{
+				var value = serializer.Deserialize(stringValue, t);
+				return value;
+			}
+
+			if (t.GetTypeInfo().IsValueType)
+			{
+				return Activator.CreateInstance(t);
+			}
+
+			return null;
+		}
 
 		#endregion
 

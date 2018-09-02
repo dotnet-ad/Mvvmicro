@@ -116,7 +116,9 @@
     <Compile Include="ViewControllers\DayViewController.designer.cs">
       <DependentUpon>DayViewController.cs</DependentUpon>
     </Compile>
-    <Compile Include="Navigation\iOSNavigationRouter.cs" />
+    <Compile Include="Navigation\TabNavigationRouter.cs" />
+    <Compile Include="Navigation\StackNavigationRouter.cs" />
+    <Compile Include="Navigation\PageNavigationRouter.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Mvvmicro\Mvvmicro.csproj">

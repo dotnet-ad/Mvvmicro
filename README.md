@@ -63,7 +63,9 @@ public class HomeViewModel : ViewModelBase
 }
 ```
 
-### INavigationRouter
+### Navigation router
+
+#### INavigationRouter
 
 The router abstracts the navigation of your app through an interpreter of `NavigationUrl`. It's up to you to provide an implementation to your view models by implementing its two methods `NavigateToAsync(NavigationUrl url)` and `NavigateBackAsync()`.
 
@@ -108,14 +110,91 @@ var url = new NavigationUrl("/Product").AddArg("id",5)
 this.Navigation.NavigateToAsync(url);
 ```
 
+#### Navigation url matching
+
 To create more complex interpreter, several matching methods are also available from `NavigationUrl`.
 
 ```csharp
-var url = new NavigationUrl("/Products/Details?v1=4,v2=6");
+var url = new NavigationUrl("/Products/Details?v1=4&v2=6");
 if(url.Match("/Products/Details")) // True
 {
 	// ...
 }
+if(url.StartsWith("/Products")) // True
+{
+	// ...
+}
+```
+
+#### NavigationRouter
+
+A more complete implementation of `INavigationRouter` is also provided for helping with url matching mapped to method execution. 
+
+Each route method should be registered through a `RouteAttribute` that decorates you method.
+
+```csharp
+public class SampleRouter : NavigationRouter
+{
+	[DefaultRoute]
+	public void NavigateToDefault() 
+	{
+		// When no other router matches, you can provide a default route.
+		// It's a right place to show a popup to the user
+	}
+
+	[Route("/")]
+	public void NavigateToRoot() 
+	{ 
+		// Reset view to the root view of your app and reset your navigation state.
+	}
+
+	[Route("/tab1/**")]
+	public void NavigateToSubroute([SubRoute]NavigationUrl suburl) 
+	{ 
+		// With a '**' ending segment, all urls starting like the registered url will match
+		// The suburl parameter will be the remaining url ("/tab1/detail" => "/detail")
+		// You can have a sub navigation router by tab for example
+		// Note the 'SubRoute' attribute that indicates which parameters will be the subroute
+	}
+
+	[Route("/detailWithParameters")]
+	public void NavigateToDetailWithParameters(int id, string description) 
+	{ 
+		// parameters will be extracted from query string 
+		// example: "/detailWithParameters?id=5&description=sample"
+		//          => { id = 5, description = "sample" }
+	}
+
+	[Route("/detailWithQuery")]
+	public void NavigateToDetailWithQuery(NavigationUrlQuery query) 
+	{ ing description) 
+	{ 
+		// the query string of the last segment will be given
+		// you can then extract arguments like 'query.Get<int>("id")'
+	}
+
+	[Route("/detailWithUrl")]
+	public void NavigateToDetailWithUrl(NavigationUrl url) 
+	{ 
+		// the entire matched url will be given as parameter
+	}
+
+	[Route("/detailWithPath/{id}/{description}")]
+	public void NavigateToDetailWithPath(int id, string description) 
+	{ 
+		// parameters will be extracted from query string 
+		// example: "/detailWithParameters/5/sample"
+		//          => { id = 5, description = "sample" }
+	}
+	
+	public override bool CanNavigateBack
+	{
+	   get { /* Indicates whether a back navigation is available */ }
+	}
+	
+	public override Task NavigateBackAsync() { /* Cancel previous navigation */ }
+}
+
 ```
 
 ### Relay commands
@@ -143,10 +222,10 @@ public class HomeViewModel : ViewModelBase
 
 ## Complementary tools
 
-Bellow, you will find a list of tools that can be used in combination with Mvvmicro to build mobile or desktop application projects.
+Bellow, you will find a list of tools that can be used in combination with **Mvvmicro** to build great mobile or desktop application projects.
 
 * [Autofac](https://autofac.org/) : Inversion of control.
-* [Wires](https://github.com/aloisdeniel/Wires) : View bindings from Xamarin.
+* [Wires](https://github.com/aloisdeniel/Wires) : View bindings for Xamarin.
 * [Refit](https://github.com/paulcbetts/refit) : Rest client implementation generator.
 * [LiteDB](http://www.litedb.org/) : Small embedded NoSQL database.
 * [Xamarin Plugins](https://github.com/xamarin/XamarinComponents) : Various abstractions for platform specific behaviours
