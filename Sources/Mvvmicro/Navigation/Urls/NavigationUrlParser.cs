@@ -10,10 +10,15 @@
     {
         #region Constructors
 
-        public NavigationUrlParser(string url)
+        private NavigationUrlParser(int currentSegment, bool isSuccess, NavigationUrl url)
         {
-            this.isSuccess = true;
-            this.url = new NavigationUrl(url);
+            this.currentSegment = currentSegment;
+            this.isSuccess = isSuccess;
+            this.url = url;
+        }
+
+        public NavigationUrlParser(string url) : this(0, true, new NavigationUrl(url))
+        {
         }
 
         #endregion
@@ -52,7 +57,7 @@
                 }
             }
 
-            return this;
+            return new NavigationUrlParser(this.currentSegment, this.isSuccess, this.url);
         }
 
         public NavigationUrlParser WithDynamicSegment<T>(out T value)
@@ -80,7 +85,7 @@
                 }
             }
 
-            return this;
+            return new NavigationUrlParser(this.currentSegment, this.isSuccess, this.url);
         }
 
         public NavigationUrlParser WithQuery(Action<NavigationUrlQueryParser> arguments)
@@ -92,7 +97,7 @@
                 this.isSuccess = query.IsSuccess;
             }
 
-            return this;
+            return new NavigationUrlParser(this.currentSegment, this.isSuccess, this.url);
 
         }
     }

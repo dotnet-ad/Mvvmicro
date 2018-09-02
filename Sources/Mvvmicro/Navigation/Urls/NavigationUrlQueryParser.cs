@@ -7,10 +7,14 @@
     /// </summary>
     public class NavigationUrlQueryParser
     {
-        public NavigationUrlQueryParser(NavigationUrlQuery query)
+        private NavigationUrlQueryParser(bool isSuccess, NavigationUrlQuery query)
         {
-            this.isSuccess = true;
+            this.isSuccess = isSuccess;
             this.query = query;
+        }
+
+        public NavigationUrlQueryParser(NavigationUrlQuery query) : this(true,query)
+        {
         }
 
         #region Fields
@@ -30,7 +34,7 @@
                 this.isSuccess = query.TryGet<T>(out value, name);
             }
 
-            return this;
+            return new NavigationUrlQueryParser(this.isSuccess, this.query);
         }
 
         public NavigationUrlQueryParser WithOptional<T>(string name, Action<T> value)
@@ -43,7 +47,7 @@
                 }
             }
 
-            return this;
+            return new NavigationUrlQueryParser(this.isSuccess, this.query);
         }
 
         public bool IsSuccess => this.isSuccess;
