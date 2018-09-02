@@ -1,12 +1,11 @@
 ﻿namespace Mvvmicro
 {
 	using System;
-	using System.Windows.Input;
 
 	/// <summary>
 	/// An helper command to create implementations of ICommand with a typed argument.
 	/// </summary>
-	public class RelayCommand<T> : ICommand
+	public class RelayCommand<T> : IRelayCommand
 	{
 		#region Constructors
 
@@ -40,7 +39,7 @@
 
 		public void Execute(object parameter) => this.execute((T)parameter);
 
-		public void TryExecute(T parameter)
+		public void TryExecute(object parameter)
 		{
 			if (this.CanExecute(parameter))
 				this.Execute(parameter);

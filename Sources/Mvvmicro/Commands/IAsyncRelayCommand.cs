@@ -2,12 +2,11 @@
 {
 	using System;
 	using System.ComponentModel;
-	using System.Windows.Input;
 
 	/// <summary>
 	/// An asynchronous command with a Task based execution.
 	/// </summary>
-	public interface IAsyncCommand : ICommand, INotifyPropertyChanged
+	public interface IAsyncRelayCommand : IRelayCommand, INotifyPropertyChanged
 	{
 		/// <summary>
 		/// Occurs when the execution failed.

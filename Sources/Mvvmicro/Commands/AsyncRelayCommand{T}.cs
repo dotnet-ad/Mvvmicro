@@ -8,7 +8,7 @@
 	/// <summary>
 	/// An helper command to create asynchronous implementations of ICommand with a typed argument.
 	/// </summary>
-	public class AsyncRelayCommand<T> : IAsyncCommand
+	public class AsyncRelayCommand<T> : IAsyncRelayCommand
 	{
 		#region Fields 
 
@@ -89,6 +89,12 @@
 		public void Cancel() => this.cts?.Cancel();
 
 		public bool CanExecute(object parameter) => !this.IsExecuting && this.canExecute((T)parameter);
+
+		public void TryExecute(object parameter = null)
+		{
+			if (this.CanExecute(parameter))
+				this.Execute(parameter);
+		}
 
 		#endregion
 	}
