@@ -26,6 +26,13 @@
         T Get<T>();
 
         /// <summary>
+        /// Returns true if the type has been registered.
+        /// </summary>
+        /// <returns><c>true</c>, if type has been registered, <c>false</c> otherwise.</returns>
+        /// <typeparam name="T">The type parameter.</typeparam>
+        bool IsRegistered<T>();
+
+        /// <summary>
         /// Create a new instance (even if the type has been registered as an instance).
         /// </summary>
         /// <returns>The new.</returns>
