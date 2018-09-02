@@ -1,5 +1,7 @@
 ﻿namespace Mvvmicro
 {
+	using System.Linq;
+
 	/// <summary>
 	/// On segment part of an url (ie:'Main' or `Detail?arg=4&other=5' in '/Main/Detail?arg=4&other=5').
 	/// </summary>
@@ -7,9 +9,9 @@
 	{
 		public NavigationUrlSegment(string segment)
 		{
-			var splits = segment.Split('?');
-			this.Value = splits?[0];
-			this.Query = new NavigationUrlQuery(this.Value);
+			var splits = segment.Split(new char[] { '?' }, System.StringSplitOptions.RemoveEmptyEntries);
+			this.Value = splits.ElementAtOrDefault(0);
+			this.Query = new NavigationUrlQuery(splits.ElementAtOrDefault(1));
 		}
 
 		/// <summary>

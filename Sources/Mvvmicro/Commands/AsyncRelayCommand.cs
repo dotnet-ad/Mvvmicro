@@ -64,12 +64,11 @@
 
 		public async void Execute(object parameter)
 		{
-			this.cts = new CancellationTokenSource();
-			this.execution = execute(cts.Token);
-			this.RaiseIsExecuting();
-
 			try
 			{
+				this.cts = new CancellationTokenSource();
+				this.execution = execute(cts.Token);
+				this.RaiseIsExecuting();
 				await this.execution;
 				this.lastExecution = DateTime.Now;
 				this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(LastSuccededExecution)));

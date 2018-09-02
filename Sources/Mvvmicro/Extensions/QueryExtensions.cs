@@ -2,6 +2,7 @@
 {
 	using System;
 	using System.Text;
+	using System.Linq;
 	using System.Collections.Generic;
 
 	/// <summary>
@@ -38,8 +39,8 @@
 			foreach (var pair in pairs)
 			{
 				var splits = pair.Split('=');
-				var key = Uri.UnescapeDataString(splits[0]);
-				var value = Uri.UnescapeDataString(splits?[1] ?? null);
+				var key = Uri.UnescapeDataString(splits.ElementAtOrDefault(0));
+				var value = Uri.UnescapeDataString(splits.ElementAtOrDefault(1));
 				result.Add(key,value);
 			}
 
