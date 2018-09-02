@@ -57,8 +57,8 @@
         {
             if (this.IsRegistered<T>())
             {
-                instances[typeof(T)] = null;
-                factories[typeof(T)] = null;
+                instances.Remove(typeof(T));
+                factories.Remove(typeof(T));
             }
         }
 
