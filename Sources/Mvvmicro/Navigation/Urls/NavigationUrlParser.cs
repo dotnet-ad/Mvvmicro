@@ -70,36 +70,18 @@
                 {
                     try
                     {
+
                         var current = this.CurrentSegment;
-                        value = (T)Convert.ChangeType(current, typeof(T));
-                        this.currentSegment++;
-                    }
-                    catch (Exception)
-                    {
-                        this.isSuccess = false;
-                    }
-                }
-                else
-                {
-                    this.isSuccess = false;
-                }
-            }
 
-            return new NavigationUrlParser(this.currentSegment, this.isSuccess, this.url);
-        }
+                        if (typeof(T) == typeof(Guid))
+                        {
+                            value = (T)(object)new Guid(current);
+                        }
+                        else
+                        {
+                            value = (T)Convert.ChangeType(current, typeof(T));
+                        }
 
-        public NavigationUrlParser WithDynamicSegment(out Guid value)
-        {
-            value = Guid.Empty;
-
-            if (this.isSuccess)
-            {
-                if (this.currentSegment < this.url.Segments.Length)
-                {
-                    try
-                    {
-                        var current = this.CurrentSegment;
-                        value = new Guid(current);
                         this.currentSegment++;
                     }
                     catch (Exception)

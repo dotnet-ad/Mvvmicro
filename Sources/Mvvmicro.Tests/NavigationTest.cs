@@ -2,6 +2,7 @@
 {
 	using NUnit.Framework;
     using System;
+    using System.Linq;
 
     [TestFixture()]
 	public class Test
@@ -126,6 +127,20 @@
                                .WithSegment(part3);
 
             Assert.IsTrue(result.IsSuccess);
+            Assert.AreEqual(guidPart, parsedGuid);
+        }
+
+        [Test()]
+        public void NavigationQueryUrlParser_Parsing_Guid()
+        {
+            string part1 = "part1", part2 = "part2", param = "param";
+            Guid guidPart = Guid.NewGuid();
+
+            var navigationUrl = new NavigationUrl($"{part1}/{part2}?{param}={guidPart}");
+
+            var queryParser = new NavigationUrlQueryParser(navigationUrl.Segments.LastOrDefault().Query);
+            queryParser.WithRequired(param, out System.Guid parsedGuid);
+
             Assert.AreEqual(guidPart, parsedGuid);
         }
 	}
