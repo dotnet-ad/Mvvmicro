@@ -89,17 +89,6 @@
 
 		public bool CanExecute(object parameter) => !this.IsExecuting && this.canExecute((T)parameter);
 
-		public bool TryExecute(object parameter = null)
-		{
-			if (this.CanExecute(parameter))
-			{
-				this.Execute(parameter);
-				return true;
-			}
-
-			return false;
-		}
-
 		#endregion
 	}
 }

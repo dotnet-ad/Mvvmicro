@@ -39,17 +39,6 @@
 
 		public void Execute(object parameter) => this.execute((T)parameter);
 
-		public bool TryExecute(object parameter)
-		{
-			if (this.CanExecute(parameter))
-			{
-				this.Execute(parameter);
-				return true;
-			}
-
-			return false;
-		}
-
 		#endregion
 	}
 }
