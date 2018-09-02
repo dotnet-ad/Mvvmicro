@@ -10,6 +10,11 @@
 	/// </summary>
 	public static class QueryExtensions
 	{
+		/// <summary>
+		/// Creates a query string from query paramaters.
+		/// </summary>
+		/// <returns>The query string.</returns>
+		/// <param name="parameters">Parameters.</param>
 		public static string ToQueryString(this Dictionary<string, string> parameters)
 		{
 			if (parameters == null || parameters.Count == 0)
@@ -28,6 +33,11 @@
 			return result.ToString();
 		}
 
+		/// <summary>
+		/// Extracts the query parameters from a query string.
+		/// </summary>
+		/// <returns>The query parameters.</returns>
+		/// <param name="queryString">Query string.</param>
 		public static Dictionary<string, string> ToQueryParameters(this string queryString)
 		{
 			var result = new Dictionary<string, string>();

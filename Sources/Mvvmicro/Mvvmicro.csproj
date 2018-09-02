@@ -32,7 +32,7 @@
     <Compile Include="ViewModelBase.cs" />
     <Compile Include="Commands\RelayCommand.cs" />
     <Compile Include="Commands\RelayCommand{T}.cs" />
-    <Compile Include="Navigation\INavigation.cs" />
+    <Compile Include="Navigation\INavigationRouter.cs" />
     <Compile Include="Navigation\NavigationUrl.cs" />
     <Compile Include="Extensions\QueryExtensions.cs" />
     <Compile Include="Navigation\NavigationUrlSegment.cs" />
