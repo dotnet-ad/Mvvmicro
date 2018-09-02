@@ -19,7 +19,7 @@
 		{
 			public string State { get; private set; }
 
-			public override bool CanNavigateBack => throw new NotImplementedException();
+			public override bool CanNavigateBack { get { throw new NotImplementedException(); } }
 
 			public override Task NavigateBackAsync() { throw new NotImplementedException(); }
 
