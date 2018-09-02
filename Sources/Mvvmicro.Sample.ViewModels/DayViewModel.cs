@@ -7,7 +7,7 @@
 
 	public class DayViewModel : ViewModelBase
 	{
-		public DayViewModel(IWeatherApi api, IDatabase database, INavigationRouter navigation) : base(navigation)
+		public DayViewModel(IWeatherApi api, IDatabase database)
 		{
 			this.api = api;
 			this.database = database;
