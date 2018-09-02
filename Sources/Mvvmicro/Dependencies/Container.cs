@@ -51,6 +51,19 @@
             this.factories[typeof(T)] = new Tuple<bool, Func<object>>(isInstance, () => factory(this));
         }
 
+        public bool IsRegistered<T>()
+        {
+            try
+            {
+                var factory = this.factories[typeof(T)];
+                return true;
+            }
+            catch (KeyNotFoundException)
+            {
+                return false;
+            }
+        }
+
         public T New<T>() => (T)this.factories[typeof(T)].Item2();
 
         #endregion
