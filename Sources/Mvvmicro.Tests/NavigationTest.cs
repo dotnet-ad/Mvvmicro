@@ -1,9 +1,9 @@
 ﻿namespace Mvvmicro.Tests
 {
 	using NUnit.Framework;
+    using System;
 
-
-	[TestFixture()]
+    [TestFixture()]
 	public class Test
 	{
 		[Test()]
@@ -112,6 +112,21 @@
                                  .WithDynamicSegment(out int id)
                                  .WithQuery((q) => q.WithOptional("missing", (string missing) => { }))
                                  .IsSuccess);
+        }
+
+        [Test()]
+        public void NavigationParser_Parsing_GuidArgument()
+        {
+            string part1 = "part1", part2 = "part2", part3 = "part3";
+            Guid guidPart = Guid.NewGuid();
+            var parser = new NavigationUrlParser($"{part1}/{part2}/{guidPart}/{part3}/");
+            var result = parser.WithSegment(part1)
+                               .WithSegment(part2)
+                               .WithDynamicSegment(out System.Guid parsedGuid)
+                               .WithSegment(part3);
+
+            Assert.IsTrue(result.IsSuccess);
+            Assert.AreEqual(guidPart, parsedGuid);
         }
 	}
 }
