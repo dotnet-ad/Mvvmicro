@@ -48,6 +48,8 @@
     <Compile Include="Navigation\Urls\NavigationUrlSegment.cs" />
     <Compile Include="Dependencies\IContainer.cs" />
     <Compile Include="Dependencies\Container.cs" />
+    <Compile Include="Observers\NotifyPropertyObserver.cs" />
+    <Compile Include="Observers\ObserversExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Commands\" />
@@ -57,6 +59,7 @@
     <Folder Include="Navigation\Urls\" />
     <Folder Include="Navigation\Serialization\" />
     <Folder Include="Dependencies\" />
+    <Folder Include="Observers\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
 </Project>

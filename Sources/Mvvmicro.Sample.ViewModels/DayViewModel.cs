@@ -38,12 +38,12 @@
 			set
 			{ 
 				this.Set(ref this.model, value)
-				    .ThenRaise(nameof(Name), 
-			                   nameof(Condition), 
-			                   nameof(MaxTemperature), 
-			                   nameof(MinTemperature),
-							   nameof(Humidity),
-							   nameof(Forecast)); 
+				        .ThenRaise(() => Name) 
+			            .ThenRaise(() => Condition)
+			            .ThenRaise(() => MaxTemperature)
+                        .ThenRaise(() => MinTemperature)
+						.ThenRaise(() => Humidity)
+						.ThenRaise(() => Forecast); 
 			}
 		}
 

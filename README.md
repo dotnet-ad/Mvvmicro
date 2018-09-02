@@ -14,7 +14,7 @@ Available on NuGet
 
 A base implementation of `INotifyPropertyChanged` with helper method for raising property changes.
 
-* `Set<T>(ref T field, T newValue, [auto] string propertyName)` : sets the value of the referenced field with the given new value and raises `PropertyChanged` even if its different value that the current one. An `Assignment<T>` will be returned to indicate the change status with `HasChanged`. If the value changed, this object also allows you in to raise other linked properties or commands that depends on the current one with `ThenRaise` (*use* `nameof(<Name>)` *to avoid magic strings in your code*).
+* `Set<T>(ref T field, T newValue, [auto] string propertyName)` : sets the value of the referenced field with the given new value and raises `PropertyChanged` even if its different value that the current one. An `Assignment<T>` will be returned to indicate the change status with `HasChanged`. If the value changed, this object also allows you in to raise other linked properties or commands that depends on the current one with `ThenRaise`.
 
 ```csharp
 public class HomeViewModel : Observable
@@ -23,14 +23,14 @@ public class HomeViewModel : Observable
     
     public string Firstname
     {
-    	get { return this.firstname; }
-    	set { this.Set(ref this.firstname, value).ThenRaise(nameof(Fullname))); }
+    	get => this.firstname;
+    	set => this.Set(ref this.firstname, value).ThenRaise(() => this.Fullname);
     }
     
     public string Lastname
     {
-    	get { return lastname; }
-    	set { this.Set(ref this.lastname, value).ThenRaise(nameof(Fullname))); }
+    	get => this.lastname;
+    	set => this.Set(ref this.lastname, value).ThenRaise(() => this.Fullname);
     }
     
     public string Fullname => $"{Firstname} {Lastname}";
@@ -45,6 +45,8 @@ An `Observable` object that adds navigation elements. This should be the base cl
 ```csharp
 public class HomeViewModel : ViewModelBase
 {
+	//...
+	
     private void NavigateDetail(int id)
     {
     	// "/DayViewModel?id=467674"
@@ -126,6 +128,47 @@ Container.Default.Register((c) => new HomeViewModel(c.Get<IApi>())); // a new in
 var homeViewModel = Container.Default.Get<HomeViewModel>();
 ```
 
+### Observers
+
+Sometimes you wish to listen to observable property changes : if you subscribe to `PropertyChanged` event, memory leaks could append since your observable will keep a reference to your observer in order to notify it. 
+
+This is often solved by subscribing to this event when your observer becomes active (*i.e. when your page become visible, like `OnResume` in an Android activity*) and unsubcribing to it when the observable becomes inactive (*i.e. when your page disappears, like `OnPause` in an Android activity*). But what happens if your observable triggers property changes while your observer is inactive : **the pending modifications are never applied to it**! This can be deactivated through `ShouldTriggerPendingChanges` property.
+
+The observer also manages initial values by triggering a change on all registered properties the first time. This can be deactivated through `ShouldTriggerInitialValues` property.
+
+The `NotifyPropertyObserver` solves those requirements :
+
+```csharp
+public partial class HomeViewController : UIViewController
+{
+    public HomeViewController(IntPtr ptr) : base(ptr)
+    {
+       this.ViewModel = new HomeViewModel();
+       this.observer = this.ViewModel.CreateObserver(this);
+    }
+
+    public HomeViewModel ViewModel { get; }
+
+    private NotifyPropertyObserver<HomeViewController, HomeViewModel> observer;
+
+    public override void ViewWillAppear(bool animated)
+    {
+        base.ViewWillAppear(animated);
+
+        this.observer
+            .Observe(vm => vm.Fullname, (vm, value) => this.Title = value)
+            .Start();
+    }
+
+    public override void ViewDidDisappear(bool animated)
+    {
+        base.ViewDidDisappear(animated);
+        
+        this.observer.Stop();
+    }
+}
+```
+
 ## Complementary tools
 
 Bellow, you will find a list of tools that can be used in combination with **Mvvmicro** to build great mobile or desktop application projects.
@@ -142,7 +185,7 @@ Bellow, you will find a list of tools that can be used in combination with **Mvv
 
 ## Why ?
 
-I decided to create this small framework because other alternatives offer often too much stuff for me and include unused or duplicated parts (IoC, ...). I also often find their navigation model to be not enough flexible. Finally, it's also a good starting point to learn MVVM to students. That's why this framework includes only the minimal bits I need for the majority of my developments.
+I decided to create this small framework because other alternatives offer often too much stuff for me and include unused or duplicated parts. I also often find their navigation model to be not enough flexible. Finally, it's also a good starting point to learn MVVM to students. That's why this framework includes only the minimal bits I need for the majority of my developments.
 
 ## Contributions
 
