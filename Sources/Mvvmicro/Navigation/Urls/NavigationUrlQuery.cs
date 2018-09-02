@@ -65,36 +65,58 @@
 			return this;
 		}
 
-		/// <summary>
-		/// Get the value of the argument with the given key.
-		/// </summary>
-		/// <returns>The get.</returns>
-		/// <param name="key">Key.</param>
-		/// <typeparam name="T">The 1st type parameter.</typeparam>
-		public T Get<T>([CallerMemberName] string key = null) => (T)this.Get(typeof(T), key);
+        /// <summary>
+        /// Get the value of the argument with the given key.
+        /// </summary>
+        /// <returns>The get.</returns>
+        /// <param name="key">Key.</param>
+        /// <typeparam name="T">The 1st type parameter.</typeparam>
+        public T Get<T>([CallerMemberName] string key = null) => (T)this.Get(typeof(T), key);
+
+        public object Get(Type t, [CallerMemberName] string key = null)
+        {
+            if (this.TryGet(t, out object result, key))
+                return result;
+            
+            return Activator.CreateInstance(t);
+        }
+
+        /// <summary>
+        /// Try to get the value of the argument with the given key.
+        /// </summary>
+        /// <returns>The get.</returns>
+        /// <param name="t">T.</param>
+        /// <param name="key">Key.</param>
+        public bool TryGet<T>(out T result, [CallerMemberName] string key = null)
+        {
+            if (this.TryGet(typeof(T), out object resultO, key))
+            {
+                result = (T)resultO;
+                return true;
+            }
+
+            result = default(T);
+            return false;
+
+        }
 
 		/// <summary>
-		/// Get the value of the argument with the given key.
+		/// Try to get the value of the argument with the given key.
 		/// </summary>
 		/// <returns>The get.</returns>
-		/// <param name="t">T.</param>
 		/// <param name="key">Key.</param>
-		public object Get(Type t, [CallerMemberName] string key = null)
+		public bool TryGet(Type t, out object result, [CallerMemberName] string key = null)
 		{
 			string stringValue;
 			if(parameters.TryGetValue(key, out stringValue))
 			{
-				var value = serializer.Deserialize(stringValue, t);
-				return value;
+                result = serializer.Deserialize(stringValue, t);
+                return true;
 			}
 
-			if (t.GetTypeInfo().IsValueType)
-			{
-				return Activator.CreateInstance(t);
-			}
-
-			return null;
-		}
+            result = null;
+			return false;
+        }
 
 		#endregion
 
