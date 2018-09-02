@@ -11,7 +11,7 @@
 
         public ViewModelBase()
         {
-            this.NavigateCommand = new RelayCommand<NavigationArgs>(Navigate);
+            this.NavigateCommand = new RelayCommand<NavigationArgs>(RaiseNavigationRequested);
         }
 
         #endregion
@@ -28,6 +28,8 @@
 			prepareQuery(segment);
 			this.Navigate(new NavigationUrl(new [] { segment }), direction);
 		}
+
+        public void RaiseNavigationRequested(NavigationArgs args) => this.NavigationRequested?.Invoke(this, args);
 
         public void Navigate(NavigationArgs args) => this.NavigateCommand?.TryExecute(args);
 
