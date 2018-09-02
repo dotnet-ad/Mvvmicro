@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+   <metadata minClientVersion="2.8.1">
+       <id>Mvvmicro</id>
+       <version>$version$</version>
+       <title>Mvvmicro</title>
+       <authors>Aloïs Deniel</authors>
+       <owners>Aloïs Deniel</owners>
+     <licenseUrl>https://github.com/aloisdeniel/Mvvmicro/blob/master/LICENSE</licenseUrl>
+     <projectUrl>https://github.com/aloisdeniel/Mvvmicro</projectUrl>
+     <iconUrl>https://raw.githubusercontent.com/aloisdeniel/Mvvmicro/master/Documentation/Logo.png</iconUrl>
+       <requireLicenseAcceptance>false</requireLicenseAcceptance>
+       <description>Minimalist MVVM framework for .NET..</description>
+       <summary>Minimalist MVVM framework for .NET..</summary>
+     <tags>mvvm, micro, wpf, xamarin, mvp, binding</tags>
+   </metadata>
+   <files>
+     <file src="..\Sources\Mvvmicro\bin\Release\Mvvmicro.dll" target="lib\portable-net45+win8+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Mvvmicro.dll" />
+     <file src="..\Sources\Mvvmicro\bin\Release\Mvvmicro.dll" target="lib\netstandard1.1\Mvvmicro.dll" />
+   </files>
+</package>
